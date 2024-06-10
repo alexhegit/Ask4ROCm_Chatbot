@@ -6,9 +6,11 @@ Learn ROCm with chatbot which powered by AMD ROCm solution.
 
 
 ## Supported hardware
-- AMD CDNA GPU: MI200 / MI300
-- AMD RDNA GPU: Radeon 7000 series / Radeon  6000 series / iGPU 780M
-- AMD CPU
+Any AMD GPUs supported by ROCm should work for this Chatbot. You may find the GPU list from [here](https://rocm.docs.amd.com/projects/install-on-linux/en/latest/reference/system-requirements.html).
+
+- AMD CDNA GPU:  MI300 / MI200 / MI100, etc
+- AMD RDNA GPU: Radeon 7000 series / Radeon  6000 series / iGPU 780M ,etc
+- AMD CPU (w/o ROCm)
 
 **NOTE**
 
