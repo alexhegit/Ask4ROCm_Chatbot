@@ -1,11 +1,11 @@
 # Ask4ROCm_Chatbot
 Learn ROCm with chatbot which powered by AMD ROCm solution.
 
-## Demo show
+## Demo Show
 ![](./resources/Ask4ROCm_Chatbot_Demo.gif)
 
 
-## Supported hardware
+## Supported Hardware
 Any AMD GPUs supported by ROCm should work for this Chatbot. You may find the GPU list from [here](https://rocm.docs.amd.com/projects/install-on-linux/en/latest/reference/system-requirements.html).
 
 - AMD CDNA GPU:  MI300 / MI200 / MI100, etc
