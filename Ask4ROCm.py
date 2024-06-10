@@ -34,7 +34,7 @@ st.image("https://www.amd.com/content/dam/amd/en/images/logos/products/amd-rocm-
          
 # Setting in sidebar
 st.sidebar.header("Model")
-llm_name=st.sidebar.selectbox("", ("llama3", "qwen2:7b", "llama2-chinese", "phi3", "tinyllama"))
+llm_name=st.sidebar.selectbox("", ("llama3", "tinyllama"))
 llm_temperature = st.sidebar.slider('Temperature', 0.0, 1.0, 0.6, step=0.01)
 
 if "config_init" not in st.session_state:
