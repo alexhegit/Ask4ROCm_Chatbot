@@ -6,7 +6,7 @@ Learn ROCm with chatbot which powered by AMD ROCm solution.
 - AMD RDNA GPU: Radeon 7000 series / Radeon  6000 series / iGPU 780M
 
 ## Software Installation
-This chatbot is depends on many OSS project.
+This chatbot depends on many OSS projects.
 - Ubuntu OS
 - AMD ROCm
 - PyTorch_rocm
@@ -18,7 +18,7 @@ This chatbot is depends on many OSS project.
   - Embedding Model: nomic-embed-text
 
 ### ROCm
-Install ROCm refer to https://rocm.docs.amd.com/projects/install-on-linux/en/latest/tutorial/quick-start.html
+Refer to https://rocm.docs.amd.com/projects/install-on-linux/en/latest/tutorial/quick-start.html to install the ROCm components.
 
 Then to setup a Python base environment to run the chatbot application. You may use conda or python venv to manage it.
 
