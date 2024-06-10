@@ -6,9 +6,11 @@ Learn ROCm with chatbot which powered by AMD ROCm solution.
 - AMD RDNA GPU: Radeon 7000 series / Radeon  6000 series / iGPU 780M
 
 **NOTE**
+
 AMD iGPU 780M is a very powerful integreated GPU of AMD Ryzne GPU. Please refer to https://github.com/alexhegit/Playing-with-ROCm/blob/main/inference/LLM/Run_Ollama_with_AMD_iGPU780M-QuickStart.md to enable AMD iGPU-780M with ROCm.
 
-And you can also use any AMD CPU in your hand with Ollama to do the LLM inference if the system w/o any AMD GPU or NVIDIA GPU. 
+Certenly, you could use any AMD CPU in your hand with Ollama to do the LLM inference if the system w/o any AMD GPU or NVIDIA GPU. 
+
 
 ## Software Installation
 This chatbot depends on many OSS projects.
