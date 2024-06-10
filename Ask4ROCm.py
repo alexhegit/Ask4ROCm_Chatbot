@@ -4,10 +4,9 @@
 
 # Question Examples
 """
-What's the steps to SWITCHING THE DAYTIME RUNNING LAMPS ON AND OFF and which pages show it?
+What is MIGraphX?
 
-
-Which pages could get the detials about Exterior Lighting Control?
+How to install MIGraphX?
 """
 
 import os
@@ -30,7 +29,7 @@ from llama_index.vector_stores.chroma import ChromaVectorStore
 st.set_page_config(page_title="Your Local Chatbot, assist to learn ROCm", page_icon="🦙", layout="centered", initial_sidebar_state="auto", menu_items=None)
 #st.info("Powered by ROCm & LlamaIndex 💬🦙")
 #st.info("Check out the full tutorial to build this app in our [blog post](https://blog.streamlit.io/build-a-chatbot-with-custom-data-sources-powered-by-llamaindex/)", icon="📃")
-st.title("Your Local Chatbot \n powered by AMD ROCm!")
+st.title("Learn ROCm with Chatbot \n powered by AMD!")
 st.image("https://www.amd.com/content/dam/amd/en/images/logos/products/amd-rocm-lockup-banner.jpg")
          
 # Setting in sidebar
@@ -59,7 +58,7 @@ if uploaded_file is not None:
 st.sidebar.header("Delete VectorDB")
 if st.sidebar.button("Delete VectorDB"):
     shutil.rmtree('./chroma_db', ignore_errors=True)
-st.sidebar.markdown("NOTE: Then, close the APP and run it again with updated Index!")
+st.sidebar.markdown("NOTE: Please to close the APP and run it again with updated IndexDB!")
 
 # Set embedding model
 # Please download it ahead running this lab by "ollama pull nomic-embed-text"
