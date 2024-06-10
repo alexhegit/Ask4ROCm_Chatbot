@@ -70,7 +70,7 @@ Settings.llm = Ollama(model=llm_name, request_timeout=160.0, temperature=llm_tem
 if "service_context" not in st.session_state.keys():
     st.session_state.service_context = ServiceContext.from_defaults(llm=Settings.llm, 
                                                            embed_model=Settings.embed_model, 
-                                                           system_prompt="You are an expert on the Car User Manual and your job is to answer technical questions. Assume that all questions are related to the User Car Manual. Keep your answers technical and based on facts – do not hallucinate features.")
+                                                           system_prompt="You are an expert on AMD ROCm and your job is to answer technical questions. Assume that all questions are related to the documentation of ROCm. Keep your answers technical and based on facts – do not hallucinate features.")
 
 if "messages" not in st.session_state.keys(): # Initialize the chat messages history
     st.session_state.messages = [
