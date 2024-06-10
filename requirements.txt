@@ -7,6 +7,3 @@ llama-index-readers-llama-parse==0.1.4
 llama-index-readers-web==0.1.10
 llama-index-vector-stores-chroma==0.1.9
 streamlit==1.35.0
-torch==2.4.0.dev20240401+rocm6.0
-torchaudio==2.2.0.dev20240402+rocm6.0
-torchvision==0.19.0.dev20240402+rocm6.0
