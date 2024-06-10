@@ -5,11 +5,15 @@ Learn ROCm with chatbot which powered by AMD ROCm solution.
 - AMD CDNA GPU: MI200 / MI300
 - AMD RDNA GPU: Radeon 7000 series / Radeon  6000 series / iGPU 780M
 
+**NOTE**
+
+Please refer to https://github.com/alexhegit/Playing-with-ROCm/blob/main/inference/LLM/Run_Ollama_with_AMD_iGPU780M-QuickStart.md to enable AMD iGPU-780M with ROCm.
+
+
 ## Software Installation
 This chatbot depends on many OSS projects.
 - Ubuntu OS
 - AMD ROCm
-- PyTorch_rocm
 - WebUI: Streamlit
 - RAG pipeline: LlamaIndex
 - VectorDB: ChromaDB
@@ -21,11 +25,6 @@ This chatbot depends on many OSS projects.
 Refer to https://rocm.docs.amd.com/projects/install-on-linux/en/latest/tutorial/quick-start.html to install the ROCm components.
 
 Then to setup a Python base environment to run the chatbot application. You may use conda or python venv to manage it.
-
-### PyTorch_ROCm
-Install PyTorch-rocm from https://pytorch.org/
-e.g. on linux
-pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.0
 
 ### Streamlit
 pip install streamlit
@@ -47,6 +46,15 @@ ollama pull tinyllama
 ollama pull nomic-embed-text
 
 Please use `pip install -r requirements.txt` for easy installation.
+
+--------------------------------------------------------------------------------------------------
+### PyTorch_ROCm
+This Apps does not depend on PyTorch at NOW. But we suggest to install the PyTorch-rocm for further work.
+
+Install PyTorch-rocm from https://pytorch.org/
+e.g. on linux
+pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.0
+
 
 
 
