@@ -68,5 +68,11 @@ If you is a beginer of ROCm ,LLamaIndex and Ollama. Here are other repos may hel
    https://github.com/alexhegit/Playing-with-ROCm
 
 
-
-- 
+```
+@misc{AlexTryMachineLearning,
+  author =   {He Ye (Alex)},
+  title =    {Ask4ROCm_Chatbot: assist to learn ROCm with RAG},
+  howpublished = {\url{https://alexhegit.github.io/}},
+  year = {2024--}
+}
+```
