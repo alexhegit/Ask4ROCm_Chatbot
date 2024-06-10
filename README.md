@@ -59,7 +59,13 @@ e.g. on linux
 pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.0
 
 
-
+## Appendix
+If you is a beginer of ROCm ,LLamaIndex and Ollama. Here are other repos may help you to learn and hands-on with them.
+1. Step by Step from labs in jupyter-notebook to webui demo for creating the RAG apps with ROCm+LLamaIndex+Ollama:   
+   https://github.com/alexhegit/RAG_LLM_QnA_Assistant
+   
+1. Misc hands-on of ROCm:
+   https://github.com/alexhegit/Playing-with-ROCm
 
 
 
