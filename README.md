@@ -3,7 +3,8 @@ Learn ROCm with chatbot which powered by AMD ROCm solution.
 
 ## Demo Show
 
-DIR Tree
+**DIR Tree**
+
 ```
 Ask4ROCm_Chatbot/
 ├── Ask4ROCm.py  //Apps
@@ -18,6 +19,8 @@ Ask4ROCm_Chatbot/
 └── tools
     └── query_gpu.py
 ```
+
+**Run it**
 
 ```
 streamlit run Ask4ROCm.py
