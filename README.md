@@ -22,6 +22,8 @@ Ask4ROCm_Chatbot/
 
 **Run it**
 
+*(See the follow sections about Hardware and Software to make sure the environment is ready before run it.)*
+
 ```
 streamlit run Ask4ROCm.py
 ```
@@ -36,11 +38,11 @@ Any AMD GPUs supported by ROCm should work for this Chatbot. You may find the GP
 - AMD RDNA GPU: Radeon 7000 series / Radeon  6000 series / iGPU 780M ,etc
 - AMD CPU (w/o ROCm)
 
-**NOTE**
+*NOTE*
 
-- AMD iGPU 780M is a very powerful integreated GPU of AMD Ryzne GPU. Please refer to https://github.com/alexhegit/Playing-with-ROCm/blob/main/inference/LLM/Run_Ollama_with_AMD_iGPU780M-QuickStart.md to enable AMD iGPU-780M with ROCm.
+- *AMD iGPU 780M is a very powerful integreated GPU of AMD Ryzne GPU. Please refer to https://github.com/alexhegit/Playing-with-ROCm/blob/main/inference/LLM/Run_Ollama_with_AMD_iGPU780M-QuickStart.md to enable AMD iGPU-780M with ROCm.*
 
-- Certenly, you could use any AMD CPU in your hand with Ollama to do the LLM inference if the system w/o any AMD GPU or NVIDIA GPU. 
+- *Certenly, you could use any AMD CPU in your hand with Ollama to do the LLM inference if the system w/o any AMD GPU or NVIDIA GPU.*
 
 
 ## Software Installation
