@@ -2,6 +2,27 @@
 Learn ROCm with chatbot which powered by AMD ROCm solution.
 
 ## Demo Show
+
+DIR Tree
+```
+Ask4ROCm_Chatbot/
+├── Ask4ROCm.py  //Apps
+├── data  // source for indexing
+│   ├── rdna3-shader-instruction-set-architecture-feb-2023_0.pdf
+│   └── rocm-docs-amd-com-radeon-en-latest.pdf
+├── LICENSE
+├── README.md
+├── requirements.txt
+├── resources
+│   └── Ask4ROCm_Chatbot_Demo.gif
+└── tools
+    └── query_gpu.py
+```
+
+```
+streamlit run Ask4ROCm.py
+```
+
 ![](./resources/Ask4ROCm_Chatbot_Demo.gif)
 
 
