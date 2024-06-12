@@ -22,9 +22,10 @@ from llama_index.core import VectorStoreIndex, SimpleDirectoryReader, ServiceCon
 from llama_index.core.node_parser import SentenceSplitter
 from llama_index.embeddings.ollama import OllamaEmbedding
 from llama_index.llms.ollama import Ollama
+from llama_index.vector_stores.chroma import ChromaVectorStore
 
 import chromadb
-from llama_index.vector_stores.chroma import ChromaVectorStore
+#from chromadb.config import DEFAULT_TENANT, DEFAULT_DATABASE, Settings
 
 st.set_page_config(page_title="Your Local Chatbot, assist to learn ROCm", page_icon="🦙", layout="centered", initial_sidebar_state="auto", menu_items=None)
 #st.info("Powered by ROCm & LlamaIndex 💬🦙")
@@ -39,7 +40,7 @@ llm_temperature = st.sidebar.slider('Temperature', 0.0, 1.0, 0.6, step=0.01)
 
 if "config_init" not in st.session_state:
     st.session_state["config_init"] = True
-    st.session_state["rebuild_index"] = False
+    st.session_state["reindex"] = False
     st.session_state["db_collection"] = "db_collection"
     
 # Add an "upload file" button
@@ -53,12 +54,14 @@ if uploaded_file is not None:
     save_path = pathlib.Path(save_folder, uploaded_file.name)
     with open(save_path, mode="wb") as w:
         w.write(uploaded_file.getvalue())
-        st.session_state['rebuild_index'] = True
-# Clean the VectroDB
-st.sidebar.header("Delete VectorDB")
-if st.sidebar.button("Delete VectorDB"):
-    shutil.rmtree('./chroma_db', ignore_errors=True)
-st.sidebar.markdown("NOTE: Please to close the APP and run it again with updated IndexDB!")
+        st.session_state['reindex'] = True
+# ReIndex by cache.clear
+#st.sidebar.header("Clear Cache")
+if st.sidebar.button("ReIndex"):
+    #shutil.rmtree('./chroma_db', ignore_errors=True)
+    st.session_state['reindex'] = True
+    st.cache_resource.clear()
+st.sidebar.markdown("NOTE: More time for rebuilding the Index!")
 
 # Set embedding model
 # Please download it ahead running this lab by "ollama pull nomic-embed-text"
@@ -81,9 +84,14 @@ st.write("Selected Model", llm_name)
 
 def buid_index(service_context, dbpath):
     # initialize client
-    db = chromadb.PersistentClient(path=dbpath)
+    st.session_state.db = chromadb.PersistentClient(
+        path=dbpath,
+        #settings=Settings(allow_reset="True"),
+        #tenant=DEFAULT_TENANT,
+        #database=DEFAULT_DATABASE,
+    )
     # get collection
-    chroma_collection = db.get_or_create_collection(st.session_state["db_collection"])
+    chroma_collection = st.session_state.db.get_or_create_collection(st.session_state["db_collection"])
     # assign chroma as the vector_store to the context
     vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
     storage_context = StorageContext.from_defaults(vector_store=vector_store)
@@ -101,9 +109,16 @@ def buid_index(service_context, dbpath):
 
 def load_index(service_context, dbpath):
     # initialize client
-    db = chromadb.PersistentClient(path=dbpath)
+    st.session_state.db = chromadb.PersistentClient(
+        path=dbpath,
+        #settings=Settings(allow_reset="True"),
+        #tenant=DEFAULT_TENANT,
+        #database=DEFAULT_DATABASE,
+    )
     # get collection
-    chroma_collection = db.get_or_create_collection(st.session_state["db_collection"])
+    #chroma_collection = st.session_state.db.get_or_create_collection(st.session_state["db_collection"])
+    chroma_collection = st.session_state.db.get_collection(st.session_state["db_collection"])
+
     # assign chroma as the vector_store to the context
     vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
     storage_context = StorageContext.from_defaults(vector_store=vector_store)
@@ -120,7 +135,7 @@ def load_index(service_context, dbpath):
 def load_data():
     with st.spinner(text="Loading and indexing the Streamlit docs – hang tight! This should take 2-3 minutes."):
         service_context = st.session_state.service_context
-        if ((not os.path.exists("./chroma_db/ROCm_db")) or (st.session_state['rebuild_index'])):
+        if ((not os.path.exists("./chroma_db/ROCm_db")) or (st.session_state['reindex'] == True)):
             index = buid_index(service_context, dbpath="./chroma_db/ROCm_db")
             st.session_state['rebuild_index'] = False
         else:
