@@ -51,7 +51,7 @@ def create_ServiceContext(llm_name):
 
     if "messages" not in st.session_state.keys(): # Initialize the chat messages history
         st.session_state.messages = [
-            {"role": "assistant", "content": "Ask me a question about AMD ROCm!"}
+            {"role": "assistant", "content": "Ask me about AMD ROCm!"}
         ]
     return
 
@@ -117,7 +117,7 @@ if "config_init" not in st.session_state:
     st.session_state["db_collection"] = "db_collection"
 
 # Add an "upload file" button
-st.sidebar.header("RAG Reference File")
+st.sidebar.header("Add RAG File(pdf,txt,md)")
 save_folder = "./data"
 if not os.path.exists(save_folder):
     pathlib.Path(save_folder).mkdir(parents=True, exist_ok=True)
@@ -136,6 +136,10 @@ if st.sidebar.button("ReIndex"):
     st.session_state['reindex'] = True
     st.cache_resource.clear()
 st.sidebar.markdown("NOTE: More time for rebuilding the Index!")
+
+def clear_chat_history():
+    st.session_state.messages = [{"role": "assistant", "content": "Ask me about ROCm?"}]
+st.sidebar.button('Clear Chat History', on_click=clear_chat_history)
 
 @st.cache_resource(show_spinner=False)
 def load_data():
