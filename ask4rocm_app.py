@@ -36,13 +36,15 @@ st.image("https://www.amd.com/content/dam/amd/en/images/logos/products/amd-rocm-
 
 # Create Service Context
 #@st.cache_resource(show_spinner=False)
-def create_ServiceContext(llm_name):
+def create_ServiceContext():
     # Set embedding model
     # Please download it ahead running this lab by "ollama pull nomic-embed-text"
     Settings.embed_model = OllamaEmbedding(model_name="nomic-embed-text")
 
     # Set ollama model
-    Settings.llm = Ollama(model=llm_name, request_timeout=160.0, temperature=llm_temperature)
+    Settings.llm = Ollama(model=st.session_state.llm_name,
+                          request_timeout=160.0,
+                          temperature=st.session_state.llm_temperature)
 
     if "service_context" not in st.session_state.keys():
         st.session_state.service_context = ServiceContext.from_defaults(llm=Settings.llm,
@@ -103,13 +105,20 @@ def load_index(service_context, dbpath):
     )
     return index
 
+if "llm_name" not in st.session_state:
+    st.session_state.llm_name = "llama3"
+
+if "llm_temperature" not in st.session_state:
+    st.session_state.llm_temperature = "0.6"
 
 # Setting in sidebar
-#st.sidebar.header("Model")
-#llm_name=st.sidebar.selectbox("", ("llama3", "tinyllama"))
-#llm_temperature = st.sidebar.slider('Temperature', 0.0, 1.0, 0.6, step=0.01,)
-llm_name = "llama3"
-llm_temperature = "0.6"
+with st.form(key='Model Settings'):
+    #st.sidebar.header("Model")
+    st.session_state.llm_name=st.sidebar.selectbox("", ("llama3", "qwen2"))
+    st.session_state.lm_temperature = st.sidebar.slider('Temperature', 0.0, 1.0, 0.6, step=0.01,)
+    #submit_button = st.form_submit_button(label='Submit', on_click=create_ServiceContext)
+    #submit_button = st.form_submit_button(label='Submit', on_click=st.rerun)
+
 
 if "config_init" not in st.session_state:
     st.session_state["config_init"] = True
@@ -153,8 +162,8 @@ def load_data():
  
         return index
 
-st.write("Service Model: ", llm_name)
-create_ServiceContext(llm_name)
+st.write("Service Model: ", st.session_state.llm_name)
+create_ServiceContext()
 
 index = load_data()
 
