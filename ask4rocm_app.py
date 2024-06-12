@@ -105,9 +105,11 @@ def load_index(service_context, dbpath):
 
 
 # Setting in sidebar
-st.sidebar.header("Model")
-llm_name=st.sidebar.selectbox("", ("llama3", "tinyllama"))
-llm_temperature = st.sidebar.slider('Temperature', 0.0, 1.0, 0.6, step=0.01,)
+#st.sidebar.header("Model")
+#llm_name=st.sidebar.selectbox("", ("llama3", "tinyllama"))
+#llm_temperature = st.sidebar.slider('Temperature', 0.0, 1.0, 0.6, step=0.01,)
+llm_name = "llama3"
+llm_temperature = "0.6"
 
 if "config_init" not in st.session_state:
     st.session_state["config_init"] = True
@@ -147,7 +149,7 @@ def load_data():
  
         return index
 
-st.write("Selected Model", llm_name)
+st.write("Service Model: ", llm_name)
 create_ServiceContext(llm_name)
 
 index = load_data()
