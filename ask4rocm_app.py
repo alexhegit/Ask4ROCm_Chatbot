@@ -33,54 +33,27 @@ st.set_page_config(page_title="Your Local Chatbot, assist to learn ROCm", page_i
 st.title("Learn ROCm with Chatbot \n powered by AMD!")
 st.image("https://www.amd.com/content/dam/amd/en/images/logos/products/amd-rocm-lockup-banner.jpg")
          
-# Setting in sidebar
-st.sidebar.header("Model")
-llm_name=st.sidebar.selectbox("", ("llama3", "tinyllama"))
-llm_temperature = st.sidebar.slider('Temperature', 0.0, 1.0, 0.6, step=0.01)
 
-if "config_init" not in st.session_state:
-    st.session_state["config_init"] = True
-    st.session_state["reindex"] = False
-    st.session_state["db_collection"] = "db_collection"
-    
-# Add an "upload file" button
-st.sidebar.header("RAG Reference File")
-save_folder = "./data"
-if not os.path.exists(save_folder):
-    pathlib.Path(save_folder).mkdir(parents=True, exist_ok=True)
-uploaded_file = st.sidebar.file_uploader(label="")
-# Check if a file has been uploaded
-if uploaded_file is not None:
-    save_path = pathlib.Path(save_folder, uploaded_file.name)
-    with open(save_path, mode="wb") as w:
-        w.write(uploaded_file.getvalue())
-        st.session_state['reindex'] = True
-# ReIndex by cache.clear
-#st.sidebar.header("Clear Cache")
-if st.sidebar.button("ReIndex"):
-    #shutil.rmtree('./chroma_db', ignore_errors=True)
-    st.session_state['reindex'] = True
-    st.cache_resource.clear()
-st.sidebar.markdown("NOTE: More time for rebuilding the Index!")
+# Create Service Context
+#@st.cache_resource(show_spinner=False)
+def create_ServiceContext(llm_name):
+    # Set embedding model
+    # Please download it ahead running this lab by "ollama pull nomic-embed-text"
+    Settings.embed_model = OllamaEmbedding(model_name="nomic-embed-text")
 
-# Set embedding model
-# Please download it ahead running this lab by "ollama pull nomic-embed-text"
-Settings.embed_model = OllamaEmbedding(model_name="nomic-embed-text")
+    # Set ollama model
+    Settings.llm = Ollama(model=llm_name, request_timeout=160.0, temperature=llm_temperature)
 
-# Set ollama model
-Settings.llm = Ollama(model=llm_name, request_timeout=160.0, temperature=llm_temperature)
+    if "service_context" not in st.session_state.keys():
+        st.session_state.service_context = ServiceContext.from_defaults(llm=Settings.llm,
+                                                               embed_model=Settings.embed_model,
+                                                               system_prompt="You are an expert on AMD ROCm and your job is to answer technical questions. Assume that all questions are related to the documentation of ROCm. Keep your answers technical and based on facts – do not hallucinate features.")
 
-if "service_context" not in st.session_state.keys():
-    st.session_state.service_context = ServiceContext.from_defaults(llm=Settings.llm, 
-                                                           embed_model=Settings.embed_model, 
-                                                           system_prompt="You are an expert on AMD ROCm and your job is to answer technical questions. Assume that all questions are related to the documentation of ROCm. Keep your answers technical and based on facts – do not hallucinate features.")
-
-if "messages" not in st.session_state.keys(): # Initialize the chat messages history
-    st.session_state.messages = [
-        {"role": "assistant", "content": "Ask me a question about AMD ROCm!"}
-    ]
-
-st.write("Selected Model", llm_name)
+    if "messages" not in st.session_state.keys(): # Initialize the chat messages history
+        st.session_state.messages = [
+            {"role": "assistant", "content": "Ask me a question about AMD ROCm!"}
+        ]
+    return
 
 def buid_index(service_context, dbpath):
     # initialize client
@@ -131,9 +104,40 @@ def load_index(service_context, dbpath):
     return index
 
 
+# Setting in sidebar
+st.sidebar.header("Model")
+llm_name=st.sidebar.selectbox("", ("llama3", "tinyllama"))
+llm_temperature = st.sidebar.slider('Temperature', 0.0, 1.0, 0.6, step=0.01,)
+
+if "config_init" not in st.session_state:
+    st.session_state["config_init"] = True
+    st.session_state["reindex"] = False
+    st.session_state["db_collection"] = "db_collection"
+
+# Add an "upload file" button
+st.sidebar.header("RAG Reference File")
+save_folder = "./data"
+if not os.path.exists(save_folder):
+    pathlib.Path(save_folder).mkdir(parents=True, exist_ok=True)
+uploaded_file = st.sidebar.file_uploader(label="")
+# Check if a file has been uploaded
+if uploaded_file is not None:
+    save_path = pathlib.Path(save_folder, uploaded_file.name)
+    with open(save_path, mode="wb") as w:
+        w.write(uploaded_file.getvalue())
+        st.session_state['reindex'] = True
+
+# ReIndex by cache.clear
+#st.sidebar.header("Clear Cache")
+if st.sidebar.button("ReIndex"):
+    #shutil.rmtree('./chroma_db', ignore_errors=True)
+    st.session_state['reindex'] = True
+    st.cache_resource.clear()
+st.sidebar.markdown("NOTE: More time for rebuilding the Index!")
+
 @st.cache_resource(show_spinner=False)
 def load_data():
-    with st.spinner(text="Loading and indexing the Streamlit docs – hang tight! This should take 2-3 minutes."):
+    with st.spinner(text="Loading and indexing the ROCm docs – hang tight! This should take 2-3 minutes."):
         service_context = st.session_state.service_context
         if ((not os.path.exists("./chroma_db/ROCm_db")) or (st.session_state['reindex'] == True)):
             index = buid_index(service_context, dbpath="./chroma_db/ROCm_db")
@@ -142,6 +146,9 @@ def load_data():
             index = load_index(service_context=service_context, dbpath="./chroma_db/ROCm_db")
  
         return index
+
+st.write("Selected Model", llm_name)
+create_ServiceContext(llm_name)
 
 index = load_data()
 
