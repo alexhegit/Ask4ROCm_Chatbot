@@ -25,7 +25,7 @@ Ask4ROCm_Chatbot/
 *(See the follow sections about Hardware and Software to make sure the environment is ready before run it.)*
 
 ```
-streamlit run Ask4ROCm.py
+streamlit run ask4rocm_app.py
 ```
 
 ![](./resources/Ask4ROCm_Chatbot_Demo.gif)
