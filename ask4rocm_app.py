@@ -33,16 +33,15 @@ st.image("https://www.amd.com/content/dam/amd/en/images/logos/products/amd-rocm-
          
 
 # Create Service Context
-#@st.cache_resource(show_spinner=False)
-def create_ServiceContext():
+def create_ServiceContext(llm_name, llm_temperature):
     # Set embedding model
     # Please download it ahead running this lab by "ollama pull nomic-embed-text"
     Settings.embed_model = OllamaEmbedding(model_name="nomic-embed-text")
 
     # Set ollama model
-    Settings.llm = Ollama(model=st.session_state.llm_name,
+    Settings.llm = Ollama(model=llm_name,
                           request_timeout=160.0,
-                          temperature=st.session_state.llm_temperature)
+                          temperature=llm_temperature)
 
     if "service_context" not in st.session_state.keys():
         st.session_state.service_context = ServiceContext.from_defaults(llm=Settings.llm,
@@ -161,7 +160,7 @@ def load_data():
         return index
 
 st.write("Service Model: ", st.session_state.llm_name)
-create_ServiceContext()
+create_ServiceContext(st.session_state.llm_name, st.session_state.llm_temperature)
 
 index = load_data()
 
