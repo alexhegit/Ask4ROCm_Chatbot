@@ -1,6 +1,4 @@
-# Lab7 Use streamlit to run RAG_LLM Q&A
-
-# Usage: At the dir of it and run the command "streamlit run ./Lab7-LlamaIndex_CUM_ST.py"
+# Usage: "streamlit run ask4rocm_app.py"
 
 # Question Examples
 """
@@ -78,7 +76,7 @@ def buid_index(service_context, dbpath):
         show_progress=True,
         service_context=service_context, 
         storage_context=storage_context,
-        transformations=[SentenceSplitter(chunk_size=1024, chunk_overlap=50)],
+        transformations=[SentenceSplitter(chunk_size=1024, chunk_overlap=200)],
     )
     return index
 
