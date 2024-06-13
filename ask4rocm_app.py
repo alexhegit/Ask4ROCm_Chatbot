@@ -112,7 +112,7 @@ if "llm_temperature" not in st.session_state:
 with st.form(key='Model Settings'):
     #st.sidebar.header("Model")
     st.session_state.llm_name=st.sidebar.selectbox("", ("llama3", "qwen2"))
-    st.session_state.lm_temperature = st.sidebar.slider('Temperature', 0.0, 1.0, 0.6, step=0.01,)
+    st.session_state.llm_temperature = st.sidebar.slider('Temperature', 0.0, 1.0, 0.6, step=0.01,)
     #submit_button = st.form_submit_button(label='Submit', on_click=create_ServiceContext)
     #submit_button = st.form_submit_button(label='Submit', on_click=st.rerun)
 
