@@ -27,7 +27,7 @@ import chromadb
 
 st.set_page_config(page_title="Your Local Chatbot, assist to learn ROCm", page_icon="🦙", layout="centered", initial_sidebar_state="auto", menu_items=None)
 #st.info("Powered by ROCm & LlamaIndex 💬🦙")
-#st.info("Check out the full tutorial to build this app in our [blog post](https://blog.streamlit.io/build-a-chatbot-with-custom-data-sources-powered-by-llamaindex/)", icon="📃")
+st.info("Check out the full tutorial to build RAG app with AMD ROCm in my [repo](https://github.com/alexhegit/RAG_LLM_QnA_Assistant)", icon="📃")
 st.title("Learn ROCm with Chatbot \n powered by AMD!")
 st.image("https://www.amd.com/content/dam/amd/en/images/logos/products/amd-rocm-lockup-banner.jpg")
          
@@ -102,6 +102,51 @@ def load_index(service_context, dbpath):
     )
     return index
 
+def qna_chat():
+    if "qna_engine" not in st.session_state.keys(): # Initialize the chat engine
+        st.session_state.qna_engine = index.as_query_engine(chat_mode="condense_question", verbose=True, streaming=True)
+
+    if prompt := st.chat_input("Your question"): # Prompt for user input and save to chat history
+        st.session_state.messages.append({"role": "user", "content": prompt})
+
+    for message in st.session_state.messages: # Display the prior chat messages
+        with st.chat_message(message["role"]):
+            st.write(message["content"])
+
+    # If last message is not from assistant, generate a new response
+    if st.session_state.messages[-1]["role"] != "assistant":
+        with st.chat_message("assistant"):
+            with st.spinner("Thinking..."):
+                response = st.session_state.qna_engine.query(prompt)
+                st.write_stream(response.response_gen)
+                #message = {"role": "assistant", "content": response}
+                #st.session_state.messages.append(message) # Add response to message history
+                #FIXME: query_engine clean the response data each time, not way to save it as history
+                del st.session_state.messages
+    return
+
+def chat_chat():
+    if "chat_engine" not in st.session_state.keys(): # Initialize the chat engine
+        st.session_state.chat_engine = index.as_chat_engine(chat_mode="condense_question", verbose=True, streaming=True)
+
+    if prompt := st.chat_input("Your question"): # Prompt for user input and save to chat history
+        st.session_state.messages.append({"role": "user", "content": prompt})
+
+    for message in st.session_state.messages: # Display the prior chat messages
+        with st.chat_message(message["role"]):
+            st.write(message["content"])
+
+    # If last message is not from assistant, generate a new response
+    if st.session_state.messages[-1]["role"] != "assistant":
+        with st.chat_message("assistant"):
+            with st.spinner("Thinking..."):
+                response = st.session_state.chat_engine.stream_chat(prompt)
+                st.write_stream(response.response_gen)
+                message = {"role": "assistant", "content": response.response}
+                st.session_state.messages.append(message) # Add response to message history
+    return
+
+
 if "llm_name" not in st.session_state:
     st.session_state.llm_name = "llama3"
 
@@ -109,9 +154,10 @@ if "llm_temperature" not in st.session_state:
     st.session_state.llm_temperature = "0.6"
 
 # Setting in sidebar
+#st.sidebar.header("Powered by AMD!")
 with st.form(key='Model Settings'):
-    #st.sidebar.header("Model")
-    st.session_state.llm_name=st.sidebar.selectbox("", ("llama3", "qwen2"))
+    st.session_state.engine_mode = st.sidebar.selectbox("EngineMode", ("CHAT", "QnA"))
+    st.session_state.llm_name = st.sidebar.selectbox("Model", ("llama3", "qwen2"))
     st.session_state.llm_temperature = st.sidebar.slider('Temperature', 0.0, 1.0, 0.6, step=0.01,)
     #submit_button = st.form_submit_button(label='Submit', on_click=create_ServiceContext)
     #submit_button = st.form_submit_button(label='Submit', on_click=st.rerun)
@@ -164,21 +210,7 @@ create_ServiceContext(st.session_state.llm_name, st.session_state.llm_temperatur
 
 index = load_data()
 
-if "chat_engine" not in st.session_state.keys(): # Initialize the chat engine
-        st.session_state.chat_engine = index.as_chat_engine(chat_mode="condense_question", verbose=True, streaming=True)
-
-if prompt := st.chat_input("Your question"): # Prompt for user input and save to chat history
-    st.session_state.messages.append({"role": "user", "content": prompt})
-
-for message in st.session_state.messages: # Display the prior chat messages
-    with st.chat_message(message["role"]):
-        st.write(message["content"])
-
-# If last message is not from assistant, generate a new response
-if st.session_state.messages[-1]["role"] != "assistant":
-    with st.chat_message("assistant"):
-        with st.spinner("Thinking..."):
-            response = st.session_state.chat_engine.stream_chat(prompt)
-            st.write_stream(response.response_gen)
-            message = {"role": "assistant", "content": response.response}
-            st.session_state.messages.append(message) # Add response to message history
+if st.session_state.engine_mode == "QnA":
+    qna_chat()
+else:
+    chat_chat()
