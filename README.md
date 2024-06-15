@@ -64,6 +64,8 @@ This chatbot depends on many OSS projects.
   - LLM: Llama3-7b/tinyllama or others
   - Embedding Model: nomic-embed-text
 
+![](./resources/ask4rocm_soulution_arch.JPG)
+
 ### ROCm
 Refer to https://rocm.docs.amd.com/projects/install-on-linux/en/latest/tutorial/quick-start.html to install the ROCm components.
 
