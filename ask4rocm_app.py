@@ -23,12 +23,11 @@ from llama_index.llms.ollama import Ollama
 from llama_index.vector_stores.chroma import ChromaVectorStore
 
 import chromadb
-#from chromadb.config import DEFAULT_TENANT, DEFAULT_DATABASE, Settings
 
 st.set_page_config(page_title="Your Local Chatbot, assist to learn ROCm", page_icon="🦙", layout="centered", initial_sidebar_state="auto", menu_items=None)
 #st.info("Powered by ROCm & LlamaIndex 💬🦙")
 st.info("Check out the full tutorial to build RAG app with AMD ROCm in my [repo](https://github.com/alexhegit/RAG_LLM_QnA_Assistant)", icon="📃")
-st.title("Learn ROCm with Chatbot \n powered by AMD!")
+st.title("Learn ROCm with Chatbot \n powered by AMD! 🤖🧠🇦🇮👾")
 st.image("https://www.amd.com/content/dam/amd/en/images/logos/products/amd-rocm-lockup-banner.jpg")
          
 
@@ -58,9 +57,6 @@ def buid_index(service_context, dbpath):
     # initialize client
     st.session_state.db = chromadb.PersistentClient(
         path=dbpath,
-        #settings=Settings(allow_reset="True"),
-        #tenant=DEFAULT_TENANT,
-        #database=DEFAULT_DATABASE,
     )
     # get collection
     chroma_collection = st.session_state.db.get_or_create_collection(st.session_state["db_collection"])
@@ -83,9 +79,6 @@ def load_index(service_context, dbpath):
     # initialize client
     st.session_state.db = chromadb.PersistentClient(
         path=dbpath,
-        #settings=Settings(allow_reset="True"),
-        #tenant=DEFAULT_TENANT,
-        #database=DEFAULT_DATABASE,
     )
     # get collection
     #chroma_collection = st.session_state.db.get_or_create_collection(st.session_state["db_collection"])
@@ -119,8 +112,6 @@ def qna_chat():
             with st.spinner("Thinking..."):
                 response = st.session_state.qna_engine.query(prompt)
                 st.write_stream(response.response_gen)
-                #message = {"role": "assistant", "content": response}
-                #st.session_state.messages.append(message) # Add response to message history
                 #FIXME: query_engine clean the response data each time, not way to save it as history
                 del st.session_state.messages
     return
@@ -154,13 +145,11 @@ if "llm_temperature" not in st.session_state:
     st.session_state.llm_temperature = "0.6"
 
 # Setting in sidebar
-st.sidebar.header("Author: [Alex He](https://github.com/alexhegit)")
+st.sidebar.header("Author 👉 [Alex He](https://github.com/alexhegit)")
 with st.form(key='Model Settings'):
-    st.session_state.engine_mode = st.sidebar.selectbox("EngineMode", ("CHAT", "QnA"))
+    st.session_state.engine_mode = st.sidebar.selectbox("EngineMode", ("Chat", "QnA"))
     st.session_state.llm_name = st.sidebar.selectbox("Model", ("llama3", "qwen2"))
     st.session_state.llm_temperature = st.sidebar.slider('Temperature', 0.0, 1.0, 0.6, step=0.01,)
-    #submit_button = st.form_submit_button(label='Submit', on_click=create_ServiceContext)
-    #submit_button = st.form_submit_button(label='Submit', on_click=st.rerun)
 
 
 if "config_init" not in st.session_state:
@@ -182,18 +171,17 @@ if uploaded_file is not None:
         st.session_state['reindex'] = True
 
 # ReIndex by cache.clear
-#st.sidebar.header("Clear Cache")
 if st.sidebar.button("ReIndex"):
-    #shutil.rmtree('./chroma_db', ignore_errors=True)
     st.session_state['reindex'] = True
     st.cache_resource.clear()
-st.sidebar.markdown("NOTE: More time for rebuilding the Index!")
+st.sidebar.markdown("*NOTE*: Time for rebuilding the Index!")
 
 def clear_chat_history():
     st.session_state.messages = [{"role": "assistant", "content": "Ask me about ROCm?"}]
 st.sidebar.button('Clear Chat History', on_click=clear_chat_history)
 
 with st.sidebar:
+    "👀"
     "[AMD ROCm documentation](https://rocm.docs.amd.com/en/latest/)"
     "[Source code of this App](https://github.com/alexhegit/Ask4ROCm_Chatbot)"
 
