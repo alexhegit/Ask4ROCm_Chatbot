@@ -10,7 +10,6 @@ Ask4ROCm_Chatbot/
 ├── ask4rocm.py  //chat mode App
 ├── qa4rocm.py  //query mode App
 ├── data  // source for indexing
-│   ├── rdna3-shader-instruction-set-architecture-feb-2023_0.pdf
 │   └── rocm-docs-amd-com-radeon-en-latest.pdf
 ├── LICENSE
 ├── README.md
@@ -30,6 +29,14 @@ streamlit run ask4rocm_app.py
 ```
 
 ![](./resources/Ask4ROCm_Chatbot_Demo.gif)
+
+## App Features
+- Selece EngineMode (Chat/QnA)
+- Select LLM (llama3, Qwen2)
+- Set tempereture of LLM
+- Support upload files and rebuild indexing and saved
+- Clear Chat History
+- Help URL of ROCm and source code of this repo
 
 
 ## Supported Hardware
