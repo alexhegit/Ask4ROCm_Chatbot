@@ -154,7 +154,7 @@ if "llm_temperature" not in st.session_state:
     st.session_state.llm_temperature = "0.6"
 
 # Setting in sidebar
-#st.sidebar.header("Powered by AMD!")
+st.sidebar.header("Author: [Alex He](https://github.com/alexhegit)")
 with st.form(key='Model Settings'):
     st.session_state.engine_mode = st.sidebar.selectbox("EngineMode", ("CHAT", "QnA"))
     st.session_state.llm_name = st.sidebar.selectbox("Model", ("llama3", "qwen2"))
@@ -193,6 +193,10 @@ def clear_chat_history():
     st.session_state.messages = [{"role": "assistant", "content": "Ask me about ROCm?"}]
 st.sidebar.button('Clear Chat History', on_click=clear_chat_history)
 
+with st.sidebar:
+    "[AMD ROCm documentation](https://rocm.docs.amd.com/en/latest/)"
+    "[Source code of this App](https://github.com/alexhegit/Ask4ROCm_Chatbot)"
+
 @st.cache_resource(show_spinner=False)
 def load_data():
     with st.spinner(text="Loading and indexing the ROCm docs – hang tight! This should take 2-3 minutes."):
@@ -205,7 +209,6 @@ def load_data():
  
         return index
 
-st.write("Service Model: ", st.session_state.llm_name)
 create_ServiceContext(st.session_state.llm_name, st.session_state.llm_temperature)
 
 index = load_data()
