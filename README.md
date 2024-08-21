@@ -31,7 +31,7 @@ streamlit run ask4rocm_app.py
 ![](./resources/Ask4ROCm_Chatbot_Demo.gif)
 
 ## App Features
-- Selece EngineMode (Chat/QnA)
+- Select EngineMode (Chat/QnA)
 - Select LLM (llama3, Qwen2)
 - Set tempereture of LLM
 - Support upload files and rebuild indexing and saved
