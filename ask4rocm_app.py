@@ -148,7 +148,7 @@ if "llm_temperature" not in st.session_state:
 st.sidebar.header("Author 👉 [Alex He](https://github.com/alexhegit)")
 with st.form(key='Model Settings'):
     st.session_state.engine_mode = st.sidebar.selectbox("EngineMode", ("Chat", "QnA"))
-    st.session_state.llm_name = st.sidebar.selectbox("Model", ("llama3", "qwen2"))
+    st.session_state.llm_name = st.sidebar.selectbox("Model", ("qwen2:7b", "llama3", "llama2-chinese", "phi3"))
     st.session_state.llm_temperature = st.sidebar.slider('Temperature', 0.0, 1.0, 0.6, step=0.01,)
 
 
